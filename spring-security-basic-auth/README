@@ -1,0 +1,3 @@
+I noted the following improvements for the project:
+1. to improve password security it is better to use other PasswordEncoder e.g. BCryptPasswordEncoder,
+currently it is using NoOpPasswordEncoder which is deprecated
