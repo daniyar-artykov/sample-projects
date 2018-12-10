@@ -1,6 +1,5 @@
 package com.upwork;
 
-import com.upwork.config.Application;
 import com.upwork.dto.ToursRefreshRequestDto;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = Application.class)
+        classes = {TestApplication.class, TestSpringSecurityConfig.class})
 public class IntegrationTest {
 
     @Autowired
@@ -92,15 +91,34 @@ public class IntegrationTest {
         Assert.assertEquals(200, response.getStatusCodeValue());
         // response body should be "" 
         Assert.assertNull(response.getBody());
-        
+
         Map<String, String> params = new HashMap<>();
         params.put("filter", "Afternoon Tea in London");
         response = restTemplate.withBasicAuth("john", "john12")
                 .getForEntity("/tours?filter={filter}", String.class, params);
         // status code should be 200
         Assert.assertEquals(200, response.getStatusCodeValue());
-        // response body should be "[]" because we don't have any records in the database
         Assert.assertEquals("[\"Afternoon Tea in London\"]", response.getBody());
     }
     
+    @Test
+    public void testToursRefresh_withFilter() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ToursRefreshRequestDto dto = new ToursRefreshRequestDto();
+        dto.setFilter("london"); // save to db only tours with word london
+        HttpEntity<ToursRefreshRequestDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> response = restTemplate.withBasicAuth("admin", "admin12")
+                .postForEntity("/tours/refresh", request, String.class);
+        // status code should be 200
+        Assert.assertEquals(200, response.getStatusCodeValue());
+        // response body should be "" 
+        Assert.assertNull(response.getBody());
+        
+        response = restTemplate.withBasicAuth("john", "john12")
+                .getForEntity("/tours", String.class);
+        // status code should be 200
+        Assert.assertEquals(200, response.getStatusCodeValue());
+    }
+
 }

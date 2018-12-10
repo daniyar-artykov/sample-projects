@@ -1,4 +1,4 @@
-package com.upwork.config;
+package com.upwork;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
