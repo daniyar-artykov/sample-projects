@@ -89,6 +89,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>com/upwork/Application.*</exclude>
+                        <exclude>com/upwork/config/*</exclude>
+                        <exclude></exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

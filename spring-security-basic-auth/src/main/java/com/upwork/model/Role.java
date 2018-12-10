@@ -30,6 +30,9 @@ public class Role implements Serializable {
     @Column(name = "role")
     private String role;
 
+    public Role() {
+    }
+
     public int getId() {
         return id;
     }

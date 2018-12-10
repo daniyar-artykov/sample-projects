@@ -21,20 +21,6 @@ public class UserDaoImpl implements UserDao {
     private EntityManager entityManager;
 
     @Override
-    public List<UserDetails> getUserDetails() {
-        
-        Session currentSession = entityManager.unwrap(Session.class);
-        CriteriaBuilder builder = currentSession.getCriteriaBuilder();
-        CriteriaQuery<UserDetails> criteria = builder.createQuery(UserDetails.class);
-
-        Root<UserDetails> variableRoot = criteria.from(UserDetails.class);
-        criteria.select(variableRoot);
-        TypedQuery<UserDetails> query = currentSession.createQuery(criteria);
-
-        return query.getResultList();
-    }
-
-    @Override
     public UserDetails findByUserName(String username) {
 
         Session currentSession = entityManager.unwrap(Session.class);
